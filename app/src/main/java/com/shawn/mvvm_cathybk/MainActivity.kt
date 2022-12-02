@@ -1,4 +1,4 @@
-package com.example.mvvm_cathybk
+package com.shawn.mvvm_cathybk
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
