@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mvvm_cathybk.Material3.Light">
         <activity
-            android:name=".HomeActivity"
+            android:name=".main.web.WebViewActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".main.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

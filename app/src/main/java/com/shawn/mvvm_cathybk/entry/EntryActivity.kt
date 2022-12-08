@@ -21,11 +21,11 @@ class EntryActivity : BaseActivity<ActivityEntryBinding>(),EntryHandler {
     private fun initUI() {
         binding.apply {
             btnStart.setOnClickListener {
-                goHome()
+                goHomeActivity()
             }
         }
     }
-    override fun goHome() {
+    override fun goHomeActivity() {
         HomeActivity.startActivity(this)
     }
 

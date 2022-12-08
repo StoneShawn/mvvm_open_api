@@ -26,6 +26,8 @@
 
     <!--Material Theme-->
     <style name="Theme.Mvvm_cathybk.Material3.Light" parent="Theme.Material3.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
 <!--        <item name="android:windowSplashScreenBackground">#FFFFFF</item>-->
 <!--        <item name="android:windowSplashScreenIconBackgroundColor">-->
 <!--            #000000-->
