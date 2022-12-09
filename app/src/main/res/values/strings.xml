@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mvvm_cathybk</string>
+    <string name="app_name">大台北旅遊</string>
     <string name="title_activity_entry">EntryActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
