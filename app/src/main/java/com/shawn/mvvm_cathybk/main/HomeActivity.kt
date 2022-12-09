@@ -178,6 +178,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeHandler {
                     topAppBar.inflateMenu(R.menu.home_menu)
                 }
             }
+            is HomeFragment -> {
+                super.onBackPressed()
+                finish()
+            }
+            else -> {
+                super.onBackPressed()
+            }
         }
     }
 }
