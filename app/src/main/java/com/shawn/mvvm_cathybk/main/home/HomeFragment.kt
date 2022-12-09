@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -47,12 +48,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
         super.onResume()
         initViewModel()
     }
+
     private fun initView() {
         pagingAdapter = HomeAdapter(this@HomeFragment)
         val adapter = pagingAdapter.withLoadStateHeaderAndFooter(
-            header = ReposLoadStateAdapter { pagingAdapter.retry()
+            header = ReposLoadStateAdapter {
+                pagingAdapter.retry()
             },
-            footer = ReposLoadStateAdapter { pagingAdapter.retry()}
+            footer = ReposLoadStateAdapter { pagingAdapter.retry() }
         )
         binding.apply {
             recyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -63,8 +66,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
     private fun initViewModel() {
         // fragment
         viewLifecycleOwner.lifecycleScope.launch {
+
             viewModel?.getAttractions(LanguageUtils.lang.ZH_TW.lang)?.collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            pagingAdapter.loadStateFlow.collect { loadState ->
+                val isListEmpty = loadState.refresh is LoadState.NotLoading && pagingAdapter.itemCount == 0
+                // show empty list
+                binding.emptyList.isVisible = isListEmpty
+                // Only show the list if refresh succeeds.
+                binding.recyclerView.isVisible = !isListEmpty
+                // Show loading spinner during initial load or refresh.
+                binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading || loadState.source.append is LoadState.Loading
+                // Show the retry state if initial load or refresh fails.
+                binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
             }
         }
 

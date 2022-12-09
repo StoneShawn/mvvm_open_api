@@ -7,7 +7,6 @@ import androidx.paging.LoadStateAdapter
 
 class ReposLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<ReposLoadStateViewHolder>() {
     override fun onBindViewHolder(holder: ReposLoadStateViewHolder, loadState: LoadState) {
-        Log.d("Hello","123213")
         holder.bind(loadState)
     }
 

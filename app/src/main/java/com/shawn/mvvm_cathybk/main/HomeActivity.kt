@@ -51,11 +51,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeHandler {
                     }
                     is DetailFragment -> {
                         onBackPressed()
-                        binding.apply {
-                            topAppBar.title = "台北旅遊"
-                            topAppBar.navigationIcon = null
-                            topAppBar.inflateMenu(R.menu.home_menu)
-                        }
                     }
                     else -> {
                     }
@@ -128,11 +123,18 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeHandler {
             topAppBar.title = "台北旅遊"
             topAppBar.navigationIcon = null
         }
-        ActivityUtils.replaceFragment(
+//        ActivityUtils.replaceFragment(
+//            supportFragmentManager,
+//            R.id.frame_layout,
+//            HomeFragment.newInstance(),
+//            HomeFragment::class.simpleName
+//        )
+
+        ActivityUtils.addFragmentToActivity(
             supportFragmentManager,
-            R.id.frame_layout,
             HomeFragment.newInstance(),
-            HomeFragment::class.simpleName
+            R.id.frame_layout,
+            false
         )
     }
 
@@ -143,11 +145,18 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeHandler {
             topAppBar.menu.clear()
         }
 
-        ActivityUtils.replaceFragment(
+//        ActivityUtils.replaceFragment(
+//            supportFragmentManager,
+//            R.id.frame_layout,
+//            DetailFragment.newInstance(data),
+//            DetailFragment::class.simpleName
+//        )
+
+        ActivityUtils.addFragmentToActivity(
             supportFragmentManager,
-            R.id.frame_layout,
             DetailFragment.newInstance(data),
-            DetailFragment::class.simpleName
+            R.id.frame_layout,
+            true
         )
     }
 
@@ -157,5 +166,18 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeHandler {
 
     override fun onBack() {
 
+    }
+
+    override fun onBackPressed() {
+        when(getCurrentFragment()){
+            is DetailFragment -> {
+                super.onBackPressed()
+                binding.apply {
+                    topAppBar.title = "台北旅遊"
+                    topAppBar.navigationIcon = null
+                    topAppBar.inflateMenu(R.menu.home_menu)
+                }
+            }
+        }
     }
 }

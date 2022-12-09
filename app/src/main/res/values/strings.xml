@@ -21,4 +21,10 @@
     <string name="id">印尼文</string>
     <string name="th">泰文</string>
     <string name="vi">越南文</string>
+
+
+    <string name="retry">重整頁面</string>
+    <string name="no_results">等待資料</string>
+
+
 </resources>
