@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.startup.AppInitializer
+import app.rive.runtime.kotlin.RiveInitializer
+import app.rive.runtime.kotlin.core.Rive
 import com.shawn.common.activity.BaseActivity
 import com.shawn.common.utils.LanguageUtils
 import com.shawn.mvvm_cathybk.R
@@ -27,6 +30,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeHandler {
         super.onCreate(savedInstanceState)
         initView()
         setToolBar()
+        AppInitializer.getInstance(applicationContext)
+            .initializeComponent(RiveInitializer::class.java)
+
+        Rive.init(this)
     }
 
     private fun initView() {
