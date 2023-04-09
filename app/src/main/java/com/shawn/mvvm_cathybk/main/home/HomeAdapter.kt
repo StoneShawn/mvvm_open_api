@@ -1,7 +1,6 @@
 package com.shawn.mvvm_cathybk.main.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil

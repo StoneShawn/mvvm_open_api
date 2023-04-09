@@ -5,25 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.load.engine.Engine.LoadStatus
 import com.shawn.common.fragment.BaseFragment
 import com.shawn.common.utils.LanguageUtils
-import com.shawn.mvvm_cathybk.R
 import com.shawn.mvvm_cathybk.adapter.ReposLoadStateAdapter
 import com.shawn.mvvm_cathybk.databinding.FragmentHomeBinding
 import com.shawn.mvvm_cathybk.main.HomeActivity
-import com.shawn.network.NetWorkManager
 import com.shawn.network.model.Attraction
 import com.shawn.network.repository.AttractionRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeFragment : BaseFragment(), HomeFragmentHandler {
 

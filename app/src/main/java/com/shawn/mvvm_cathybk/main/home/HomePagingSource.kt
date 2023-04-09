@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.shawn.network.model.Attraction
 import com.shawn.network.repository.AttractionRepository
-import com.shawn.network.repository.BaseRepository
 
 class HomePagingSource(val backend: AttractionRepository,
                        val query: String) : PagingSource<Int, Attraction>() {
