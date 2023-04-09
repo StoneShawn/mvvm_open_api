@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import com.shawn.mvvm_cathybk.databinding.ItemAttractionBinding
 import com.shawn.network.model.Attraction
 
-class HomeAdapter(private val handler : HomeFragmentHandler) : PagingDataAdapter<Attraction, HomeViewHolder>(HomeDiffListener) {
+class HomeAdapter(val listener: ClickListener) : PagingDataAdapter<Attraction, HomeViewHolder>(HomeDiffListener) {
 
-    companion object{
-        val HomeDiffListener = object : DiffUtil.ItemCallback<Attraction>(){
+    interface ClickListener {
+        fun onClick(data: Attraction)
+    }
+
+    companion object {
+        val HomeDiffListener = object : DiffUtil.ItemCallback<Attraction>() {
             override fun areItemsTheSame(oldItem: Attraction, newItem: Attraction): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -21,6 +25,7 @@ class HomeAdapter(private val handler : HomeFragmentHandler) : PagingDataAdapter
             }
         }
     }
+
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
@@ -28,6 +33,13 @@ class HomeAdapter(private val handler : HomeFragmentHandler) : PagingDataAdapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        return HomeViewHolder(ItemAttractionBinding.inflate(LayoutInflater.from(parent.context), parent, false),parent.context,handler)
+        return HomeViewHolder(
+            ItemAttractionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            parent.context,
+            object : ClickListener {
+                override fun onClick(data: Attraction) {
+                    listener.onClick(data)
+                }
+            })
     }
 }

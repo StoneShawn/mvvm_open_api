@@ -1,9 +1,7 @@
 package com.shawn.mvvm_cathybk.main.detail
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +13,17 @@ import com.shawn.mvvm_cathybk.main.HomeActivity
 import com.shawn.network.model.Attraction
 
 
-class DetailFragment(private val data: Attraction) : BaseFragment<FragmentDetailBinding>(),DetailHandler {
+class DetailFragment(private val data: Attraction) : BaseFragment(), DetailHandler {
+
+    private lateinit var binding: FragmentDetailBinding
+
     companion object {
         fun newInstance(data: Attraction): DetailFragment = DetailFragment(data)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,9 +34,8 @@ class DetailFragment(private val data: Attraction) : BaseFragment<FragmentDetail
     private fun initView() {
         binding.apply {
             tvTitle.text = data.name
-            tvDescription.text = Html.fromHtml(data.introduction.replace("\n","<br>"),Html.FROM_HTML_MODE_LEGACY)
+            tvDescription.text = Html.fromHtml(data.introduction.replace("\n", "<br>"), Html.FROM_HTML_MODE_LEGACY)
             tvLink.text = data.url
-
             tvLink.setOnClickListener {
                 goWebView(data.url)
             }
@@ -42,10 +47,6 @@ class DetailFragment(private val data: Attraction) : BaseFragment<FragmentDetail
             }
         }
 
-    }
-
-    override fun bindingCallback(): (LayoutInflater, ViewGroup?) -> FragmentDetailBinding = { layoutInflater, viewGroup ->
-        FragmentDetailBinding.inflate(LayoutInflater.from(context), viewGroup, false)
     }
 
     override fun goWebView(url: String) {

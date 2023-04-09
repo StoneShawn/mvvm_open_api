@@ -1,9 +1,7 @@
 package com.shawn.common.utils
 
 class LanguageUtils {
-
-
-    enum class lang(val lang: String){
+    enum class lang(val lang: String) {
         ZH_TW("zh-tw"),
         ZH_CN("zh-cn"),
         EN("en"),

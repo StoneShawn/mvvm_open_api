@@ -25,8 +25,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
+class HomeFragment : BaseFragment(), HomeFragmentHandler {
 
+    private lateinit var binding: FragmentHomeBinding
     private var viewModel: HomeViewModel? = null
     private val repository: AttractionRepository get() = AttractionRepository()
     private lateinit var pagingAdapter: HomeAdapter
@@ -37,11 +38,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
         fun newInstance(): HomeFragment = HomeFragment()
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = HomeViewModel(repository)
         initView()
-
     }
 
     override fun onResume() {
@@ -50,7 +55,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
     }
 
     private fun initView() {
-        pagingAdapter = HomeAdapter(this@HomeFragment)
+        pagingAdapter = HomeAdapter(object : HomeAdapter.ClickListener {
+            override fun onClick(data: Attraction) {
+                goDetail(data)
+            }
+        })
+
         val adapter = pagingAdapter.withLoadStateHeaderAndFooter(
             header = ReposLoadStateAdapter {
                 pagingAdapter.retry()
@@ -66,7 +76,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
     private fun initViewModel() {
         // fragment
         viewLifecycleOwner.lifecycleScope.launch {
-
             viewModel?.getAttractions(LanguageUtils.lang.ZH_TW.lang)?.collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
@@ -99,9 +108,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeFragmentHandler {
 
     override fun goDetail(data: Attraction) {
         getActivityHandler(HomeActivity::class.java)?.goDetail(data)
-    }
-
-    override fun bindingCallback(): (LayoutInflater, ViewGroup?) -> FragmentHomeBinding = { layoutInflater, viewGroup ->
-        FragmentHomeBinding.inflate(layoutInflater, viewGroup, false)
     }
 }

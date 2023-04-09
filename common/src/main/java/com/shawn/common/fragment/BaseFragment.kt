@@ -1,32 +1,14 @@
 package com.shawn.common.fragment
 
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 
-//TODO: 需搞懂
-abstract class BaseFragment<VB : ViewBinding> : Fragment() {
-    private var _binding: VB? = null
+open class BaseFragment : Fragment(),BaseViewInterface {
     private var activityHandler: Context? = null
-
-    val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activityHandler = context
-    }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = bindingCallback().invoke(inflater, container)
-        return _binding?.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onDetach() {
@@ -42,8 +24,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         return null
     }
 
-
-    abstract fun bindingCallback(): (LayoutInflater, ViewGroup?) -> VB
-
-
+    override fun getFragmentContext(): Context {
+        return requireContext()
+    }
 }

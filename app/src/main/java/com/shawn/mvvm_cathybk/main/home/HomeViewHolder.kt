@@ -11,18 +11,19 @@ import com.shawn.mvvm_cathybk.databinding.ItemAttractionBinding
 import com.shawn.network.model.Attraction
 
 
-class HomeViewHolder(private val binding: ItemAttractionBinding,private val context: Context, private val handler: HomeFragmentHandler) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(data: Attraction){
+class HomeViewHolder(private val binding: ItemAttractionBinding, private val context: Context, val listener: HomeAdapter.ClickListener) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(data: Attraction) {
         binding.apply {
             tvTitle.text = data.name
             tvDescription.text = data.introduction
 
             Glide.with(context)
-                .load(if(data.images.isNotEmpty()) data.images[0].src else context.getDrawable(R.drawable.one) )
-                .transform(CenterCrop(),RoundedCorners(50))
+                .load(if (data.images.isNotEmpty()) data.images[0].src else context.getDrawable(R.drawable.one))
+                .transform(CenterCrop(), RoundedCorners(50))
                 .into(imageView);
 
-            itemView.setOnClickListener { handler.goDetail(data) }
+            itemView.setOnClickListener { listener.onClick(data) }
         }
     }
 }
