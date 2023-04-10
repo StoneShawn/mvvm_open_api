@@ -1,6 +1,7 @@
 package com.shawn.mvvm_cathybk.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.shawn.common.fragment.BaseFragment
 import com.shawn.common.utils.LanguageUtils
 import com.shawn.mvvm_cathybk.adapter.ReposLoadStateAdapter
@@ -48,6 +50,7 @@ class HomeFragment : BaseFragment(), HomeFragmentHandler {
     }
 
     private fun initView() {
+
         pagingAdapter = HomeAdapter(object : HomeAdapter.ClickListener {
             override fun onClick(data: Attraction) {
                 goDetail(data)
@@ -61,8 +64,22 @@ class HomeFragment : BaseFragment(), HomeFragmentHandler {
             footer = ReposLoadStateAdapter { pagingAdapter.retry() }
         )
         binding.apply {
-            recyclerView.layoutManager = GridLayoutManager(context, 2)
+            recyclerView.layoutManager = GridLayoutManager(context, 2).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        var size = if ((adapter.getItemViewType(position) in arrayOf(1))) 1 else 2
+                        return size
+                    }
+                }
+            }
+//            recyclerView.layoutManager = LinearLayoutManager(context)
+//            recyclerView.setHasFixedSize(true)
             recyclerView.adapter = adapter
+        }
+
+
+        binding.retryButton.setOnClickListener {
+            pagingAdapter.retry()
         }
     }
 
@@ -82,7 +99,7 @@ class HomeFragment : BaseFragment(), HomeFragmentHandler {
                 // Only show the list if refresh succeeds.
                 binding.recyclerView.isVisible = !isListEmpty
                 // Show loading spinner during initial load or refresh.
-                binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading || loadState.source.append is LoadState.Loading
+                binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
                 // Show the retry state if initial load or refresh fails.
                 binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
             }

@@ -14,7 +14,12 @@ class HomeViewModel(private val repository: AttractionRepository) : ViewModel() 
 
     fun getAttractions(language: String): Flow<PagingData<Attraction>> {
         return Pager(
-            PagingConfig(pageSize = 27)
+            PagingConfig(
+                //一次秀多少size
+                pageSize = 10,
+                enablePlaceholders = true,
+                //距離多少size繼續往下Loading
+                prefetchDistance = 2)
         ) { HomePagingSource(repository, language) }
             .flow
             .cachedIn(viewModelScope)

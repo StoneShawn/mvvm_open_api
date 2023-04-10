@@ -5,9 +5,10 @@ import androidx.paging.PagingState
 import com.shawn.network.model.Attraction
 import com.shawn.network.repository.AttractionRepository
 
-class HomePagingSource(val backend: AttractionRepository,
-                       val query: String) : PagingSource<Int, Attraction>() {
-    val mockName = listOf("aa", "bb", "cc")
+class HomePagingSource(
+    val backend: AttractionRepository,
+    val query: String
+) : PagingSource<Int, Attraction>() {
     override fun getRefreshKey(state: PagingState<Int, Attraction>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
@@ -21,7 +22,7 @@ class HomePagingSource(val backend: AttractionRepository,
             val response = backend.service.getAttractions(query, nextPageNumber)
             LoadResult.Page(
                 data = response.data,
-                prevKey = null,
+                prevKey = if (nextPageNumber == 1) null else nextPageNumber - 1,
                 nextKey = if (response.data.isEmpty()) null else nextPageNumber + 1
             )
         } catch (e: Exception) {
